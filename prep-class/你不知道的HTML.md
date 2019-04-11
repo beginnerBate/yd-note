@@ -84,6 +84,8 @@
   });
 ``` 
     3. 可靠的jsonp实现
-    见 [dd](file:// "dd ")
+    
+    [dd]("https://github.com/beginnerBate/yd-note/blob/master/prep-class/code/jsonp.html")
+    [@马克飞象](http://weibo.com/u/2788354117)
 
 # 小结
