@@ -32,7 +32,8 @@
     跨域是指一个域下的文档或者脚本试图去请求另一个域下的资源,这里的跨域是广义的。
     广义的跨域:
       1) 资源跳转: A链接[<a href=".."></a>]、重定向[window.location.href="..."]、表单提交
-      2) 资源嵌入: <link> <script> 、<img> <frame> <iframe>，<video> 和 <audio>嵌入多媒体资源。<object>、<embed>、<applet>等dom标签和css中的 background:url(), @font-face()等。
+      2) 资源嵌入: <link> <script> 、<img> <frame> <iframe>，<video> 和 <audio>嵌入多媒体资源。
+       <object>、<embed>、<applet>等dom标签和css中的 background:url(), @font-face()等。
     我们通常说的跨域是狭义的，是由浏览器同源策略限制的一类请求场景
     比如:
         http://www.domain1.com/a.js
@@ -85,5 +86,7 @@
 ``` 
     3. 可靠的jsonp实现    
 [可靠的jsonp实现]("./prep-class/code/jsonp.html")
+
+    2.3 document.domain + iframe 跨域
 
 # 小结
