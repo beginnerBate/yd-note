@@ -83,9 +83,7 @@
       callback:hello
   });
 ``` 
-    3. 可靠的jsonp实现
-    
-    [dd]("https://github.com/beginnerBate/yd-note/blob/master/prep-class/code/jsonp.html")
-    [@马克飞象](http://weibo.com/u/2788354117)
+    3. 可靠的jsonp实现    
+[可靠的jsonp实现]("./prep-class/code/jsonp.html")
 
 # 小结
