@@ -93,8 +93,27 @@ chrome里面测试效果:
 
  ![perspective 的值为100px 和 1000px 的3D立方体效果](./image/perspective.png)
   
-  3. perspective-origin 属性
-  perspective-origin 属性
+  3. perspective-origin 属性 ◆ 该属性必须定义在父元素上【舞台上】 也就是说要和perspective一起使用。
+
+  perspective-origin 属性 主要用来决定perspective属性的源点角度，设置了x轴和y轴的位置 
+  默认值 50% 50% （center）
+  
+
+  [perspective-origin 对立方体的影响](./code/perspective-origin.html)
+
+  ![perspective-origin 对立方体的影响 效果](./image/perspective-origin.png)
+
+  4. backface-visibility 属性
+  backface-visibility 属性决定元素旋转背面是否可见。对于未旋转的元素，该元素的正面面向观看者，当其Y轴旋转180度时会导致元素背面面对观众。
+```css
+  backface-visibility: visible | hidden
+  /* 
+     visibel: 反面可见
+     hidden ： 反面不可见
+   */
+```
+[backface-visibility](./code/backface-visibility.html)
+![backface-visibility](./image/backface-visibility.png)
 ### 3.2 css3 3D 的各种应用
 #### 3.2.1 css3D立方体的实现
 # 小结
