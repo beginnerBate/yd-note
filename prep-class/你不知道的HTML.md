@@ -186,6 +186,12 @@
     这三种跨域方法等我技术上个等级再来好好研究研究。 
 ## 三、 HTML5 语义化标签
 > 为了seo 为了代码好理解 为了代码好维护 为了好写css 所以使用语义化的标签，让人你看就知道， 哦 这个是header 这个是footer
+
+**划重点!!**
+
+<font color='red'>1. 尽量少些html </font><br>
+<font color='red'>2. div进行布局 不要用div 进行包裹</font>
+
 * 标准H5的代码结构 
 ```html
 <!DOCTYPE html>
