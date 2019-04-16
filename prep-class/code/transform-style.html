@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>transform-style 案例</title>
+</head>
+<style>
+  .wrap{
+    width: 500px;
+    height: 300px;
+    margin:30px auto;
+    position: relative;
+    background: burlywood;
+  }
+  /* 设置动画 */
+  @keyframes spin{
+    0%{
+      transform: rotateY(0deg)
+    }
+    100%{
+      transform: rotateY(360deg)
+    }
+  }
+  .spin{
+    width: 142px;
+    height: 200px;
+    position: absolute;
+    top:50%;
+    left: 50%;
+    margin-left: -72px;
+    margin-top: -101px;
+    border:1px dashed orange;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    background: rgb(20, 165, 233);
+  }
+  .spin:hover{
+    animation: spin 5s linear infinite;
+  }
+  .rotate{
+    transform: perspective(200px) rotateY(45deg);
+    height: 100%;
+    transform-style: preserve-3d;
+  }
+  .rotate .img{
+    transform: rotateX(15deg) translateZ(10px);
+    transform-origin: 0 0 40px;
+    height: 100%;
+    background: aquamarine;
+  }
+</style>
+<body>
+  <div class="wrap">
+    <div class="spin">
+      <div class="rotate">
+        <div class="img">img</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

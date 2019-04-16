@@ -40,22 +40,22 @@
         http://www.domain2.com/b.js 不同域名 不允许
         或者 端口不同，协议不同等。
     这类的跨域解决方案有：
-        1. 通过jsonp 跨域
-        2. document.domain + iframe 跨域
-        3. location.hash + iframe 跨域
-        4. window.name + iframe 跨域
-        5. postMessage 跨域
-        6. 跨域资源共享（CORS）
-        7. nginx代理跨域
-        8. nodejs中间件代理跨域
-        9. WebSocket协议跨域
+        1. 通过jsonp 跨域 [get 请求 适合简单的请求]
+        2. document.domain + iframe 跨域  
+        3. location.hash + iframe 跨域 
+        4. window.name + iframe 跨域 [和上面原理很像]
+        5. postMessage 跨域 [未用过,可以尝试到项目中]
+        6. 跨域资源共享（CORS）[常用的方法]
+        7. nginx代理跨域 [待研究]
+        8. nodejs中间件代理跨域 [待研究]
+        9. WebSocket协议跨域 [带学习]
 
     2.2 jsonp跨域
     使用场景: 简单的get请求
     缺点: 只能是get请求,jsonp存在安全性问题
     优点: 简单容易实现
     实现方法:
-    1. js 原生实现jsonp 原理
+    2.2.1. js 原生实现jsonp 原理
 ```javascript
   //  js 原生实现jsonp 原理
       var hander = function(data){
@@ -66,7 +66,7 @@
       script.setAttribute('src',url);
       document.getElementsByTagName('head')[0].appendChild(script)
 ```   
-    2. jsonp 简单实现
+    2.2.2. jsonp 简单实现
 ```javascript
   // jsonp 简单实现
   function jsonp(req){
@@ -84,13 +84,163 @@
       callback:hello
   });
 ``` 
-    3. 可靠的jsonp实现    
+    2.2.3. 可靠的jsonp实现    
 [可靠的jsonp实现]("./prep-class/code/jsonp.html")
 
     2.3 document.domain + iframe 跨域
-    
-    前提条件：
-    这两个域名必须属于同一个一级域名!而且所用的协议，端口都要一致，否则无法利用document.domain进行跨域。
-    Javascript出于对安全性的考虑，而禁止两个或者多个不同域的页面进行互相操作。
-    而相同域的页面在相互操作的时候不会有任何问题。
+    ★★
+    使用条件: 一级域名一致才可以相同的情况下,才能使用此方法。
+    比如： yideng.com/test.html 和 a.yideng.com/a.html 这两个域名进行 在各自的页面中加上 
+```javascript
+    // 在test.html中和a.html中 把domain 设置成一样的域名[主域名]
+    document.domain = "yideng.com"
+```
+    2.4 location.hash + iframe 跨域
+    实现原理: 利用location.hash传值,根据需求监听hash 变化，执行相应的操作。
+    优点:可以解决完全跨域问题,实现双向通信
+    缺点: 安全性不高，支持传递的数据量小
+    实现核心代码:
+ ```javascript
+    // yideng.com/yd.html 和 dengyi.com/dy.html 通信
+    // yd.html
+    function startRequest(){
+        var ifr = document.craeteElement('iframe');
+        ifr.style.display = 'none';
+        ifr.src = 'http://dengyi.com/dy.html#test';
+        document.body.appendChild(ifr);
+    }   
+    // 监听 hash 变化
+    function chechHash() {
+        try{
+            var data = location.hash? location.hash.substring(1):"";
+            console.log('Now the data is' + data);
+            // 根据data做一些处理
+            // .....
+        } catch (e) { }
+    }
+    // 定时监听
+  setInterval(chechHash,2000)  
+ 
+ //-----------degngyi.com/dy.html 页面--------------
+ function callBack(){
+     try{
+         parent.location.hash = 'testdata';
+     }catch(e){}
+     var ifrproxy = document.createElement('iframe');
+     ifrproxy.style.display = 'none';
+     ifrproxy.src = 'http://yideng.com/yd.html#testdata';
+     document.body.appendChild(ifrproxy)
+ }   
+ switch (location.hash){
+     case: '#test':
+       callBack();
+       break;
+     case:"#other":
+        //  ....
+        break;  
+ }
+ ```
+    2.5 window.name + iframe 跨域
+    实现原理: window.name + iframe 跨域和 window.hash + iframe 跨域原理很像 ，利用window.name 属性的特点：
+        1) window.name = string 设置窗口的名称，
+        2) name 值在不同的页面（甚至不同域名）加载后依旧存在，并且可以支持非常长的 name 值（2MB）  
+    ★★
+    2.6 postMessage 跨域
+    window.postMessage() 方法可以安全的实现跨源通信。
+    语法：
+ ```javascript
+      otherWindow.postMessage(message,targetOrigin,[transfer]);
+    //   the dispatched event
+    window.addEventListener("message", receiveMessage,false);
+    function receiveMessage(event){
+        var origin = event.origin || event.originalEvent.origin;
+        if (origin !== "http://example.org:8080")return;
+    }
+ ```   
+     跨域代码实现
+ ```javascript
+      //  A: 窗口: http://example.com:8080  中js
+      var popup = window.open('....');
+
+      popup.postMessage('hello here', 'http://example.org');
+      function receiveMessage(event){
+          if(event.origin !== "http://example.org") return
+      }
+      window.addEventListener("message", receiveMessage, false);
+
+    //  popup: 窗口：  http://example.org  中的js
+    //  当A页面postMessage被调用后，这个function被addEventListenner调用
+    function receiveMessage(event)
+    {
+    if (event.origin !== "http://example.com:8080")
+        return;
+    event.source.postMessage("hi there yourself!  the secret response " +
+                            "is: rheeeeet!",
+                            event.origin);
+    }
+    window.addEventListener("message", receiveMessage, false);
+ ```
+    2.7 跨域资源共享（CORS） 
+    常用的跨域方法，主要在后端中设置。
+    2.8 nginx代理跨域、nodejs中间件代理跨域、WebSocket协议跨域
+    这三种跨域方法等我技术上个等级再来好好研究研究。 
+## 三、 HTML5 语义化标签
+> 为了seo 为了代码好理解 为了代码好维护 为了好写css 所以使用语义化的标签，让人你看就知道， 哦 这个是header 这个是footer
+
+**划重点!!**
+
+<font color='red'>1. 尽量少些html </font><br>
+<font color='red'>2. div进行布局 不要用div 进行包裹</font>
+
+* 标准H5的代码结构 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>h5语义化</title>
+</head>
+<body>
+    <!-- header 网站的页眉 头部 -->
+  <header>
+    <h1>header</h1>
+  </header>
+  <!-- 网站的导航 可以在 header里面 -->
+  <nav>nav</nav>
+  <!-- main 文档主要的内容 一般一个网站里面只有一个 -->
+  <main>
+      <!-- 文档 应用 独立页面 -->
+    <article>
+        <!-- 区域  -->
+      <section></section>
+    </article>
+    <!-- 侧边栏 广告 -->
+    <aside> </aside>
+  </main>
+  <!-- 底部 页脚 -->
+  <footer>
+      <address>联系信息</address>
+  </footer>
+</body>
+</html>
+```
+## 四、 img标签知道多
+> img 标签除了 正常显示图片的使用功能之外，还可以实现：
+1)  简单的测下载速度,代码如下:
+```js
+  var Img = new Image();
+  Img.src = 'xxx.png' 
+  fileSize = 100;
+
+  var st = new Date();
+  Img.onLoad = function(){
+   var et = new Date();
+   var speed = Math.round(filesize*1000)/(et - st);
+   console.log(speed)
+  }
+```
+[img测速](./code/img.html)
 # 小结
+> 主要了解同源策略，跨域的常用方法，h5 语义化， 研究跨域的时候发现跨域的水很深，需要掌握的知识点还挺多，最后三个跨域的方式在网上看了一下 感觉自己要提高技术水平之后 回过来在深入研究。
