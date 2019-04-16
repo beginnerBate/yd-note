@@ -88,5 +88,9 @@
 [可靠的jsonp实现]("./prep-class/code/jsonp.html")
 
     2.3 document.domain + iframe 跨域
-
+    
+    前提条件：
+    这两个域名必须属于同一个一级域名!而且所用的协议，端口都要一致，否则无法利用document.domain进行跨域。
+    Javascript出于对安全性的考虑，而禁止两个或者多个不同域的页面进行互相操作。
+    而相同域的页面在相互操作的时候不会有任何问题。
 # 小结
