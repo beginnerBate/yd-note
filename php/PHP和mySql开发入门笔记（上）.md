@@ -173,3 +173,69 @@ b.php
     }
   ?>
 ```
+# 链接数据库
+mysqli面向过程风格
+```php
+  <?php
+      $serve = 'localhost:3306';
+      $username = 'root';
+      $password = '';
+      $dbname = 'phplesson';
+      $mysqli = new Mysqli($serve,$username,$password,$dbname);
+      if($mysqli->connect_error){
+        die('connect error:'.$mysqli->connect_errno);
+      }
+      $mysqli->set_charset('UTF-8'); // 设置数据库字符集
+
+      $result = $mysqli->query('select * from news');
+      $data = $result->fetch_all(); // 从结果集中获取所有数据
+      print_r($data);
+
+  ?>
+```
+PDO连接数据库
+```php
+    $serve = 'mysql:host=localhost:3306;dbname=phplesson;charset=utf8';
+    $username = 'root';
+    $password = '';
+    try{ // PDO连接数据库若错误则会抛出一个PDOException异常
+      $PDO = new PDO($serve,$username,$password);
+      $result = $PDO->query('select * from news');
+      $data = $result->fetchAll(PDO::FETCH_ASSOC); // PDO::FETCH_ASSOC表示将对应结果集中的每一行作为一个由列名索引的数组返回
+      print_r($data);
+    } catch (PDOException $error){
+      echo 'connect failed:'.$error->getMessage();
+    }
+```
+# php对数据库增删改
+```php
+  // 新增数据
+  //  获取前台传入的数据
+    $newstitle = $_REQUEST['newstitle'];
+    $newsimg = $_REQUEST['newsimg'];
+    $newcontent = $_REQUEST['newcontent'];
+    $datetime = $_REQUEST['addtime'];
+    $sql="INSERT INTO news (newstitle,newsimg,newcontent,datatime) VALUES ('".$newstitle."','".$newsimg."','".$newcontent."',".$datetime.")";
+    if($search = $mysqli->query($sql))
+    {
+          echo "成功".$mysqli->affected_rows;
+    }else{
+      echo "失败";
+    }
+  // 删除数据
+  $delsql = "DELETE FROM `news` WHERE newsid=1";
+  if($del = $mysqli->query($delsql))
+  {
+        echo "删除成功".$mysqli->affected_rows;
+  }else{
+    echo "删除失败";
+  }
+  // 更新数据
+  $updatesql = "UPDATE `news` SET `newstitle`='update php7' WHERE newsid = 2";
+  if($del = $mysqli->query($delsql))
+  {
+        echo "更新". $mysqli->affected_rows ."成功";
+  }else{
+    echo "删除失败";
+  }
+```
