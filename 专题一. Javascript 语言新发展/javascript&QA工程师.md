@@ -1,6 +1,6 @@
 # 2019年5月20日直播课 JavaScript&QA工程师
 
-## 单元测试 -- 小的函数测试 karma 安装和流程
+## 一、单元测试 -- 小的函数测试 karma 安装和流程
 ```js
 // 1. 安装karma
  npm install karma --save-dev 或者 yarn add karma --dev
@@ -47,4 +47,45 @@ npm i karma-coverage --save-dev
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: ['progress','coverage'],
 ```
-# e2e测试 确保功能
+## 二、e2e测试 --确保功能 selenium-webdriver 安装和配置
+1. 安装测试包 selenium-webdriver
+```
+npm i selenium-webdriver --save-dev
+或者
+yarn add selenium-webdriver --dev
+```
+2. 下载对应的浏览器内核 并解压到浏览器中
+
+[https://www.npmjs.com/package/selenium-webdriver]("https://www.npmjs.com/package/selenium-webdriver")
+
+3.  e2e 测试 又叫端对端测试
+
+## 三、接口测试 确保数据 Mocha 
+1.  [Mocha官网]("https://mochajs.org/")
+> Mocha是一个在Node.js和浏览器上运行的功能丰富的JavaScript测试框架，使异步测试变得简单而有趣。Mocha测试以串行方式运行，允许灵活准确的报告，同时将未捕获的异常映射到正确的测试用例
+
+2. 安装
+
+```javascript
+    npm install --save-dev mocha
+```
+3. 小demo
+```javascript
+     // tests/service/router.spec.js
+     const axios = require("axios");
+    describe("node接口", function () {
+        it("test接口测试", function (done) {
+            axios.get("http://xcssss.com")
+            .then(function(response){
+                if(response.data.xx == ""){
+                    done();
+                }else{
+                    done(new Error("数据请求出错"))
+                }
+            }).catch(function(error){
+                done(error);
+            })
+
+        })
+    });
+```
