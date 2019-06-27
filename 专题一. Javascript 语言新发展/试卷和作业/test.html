@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <button id="test">ttt</button>
+</body>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+<script>
+// function yideng(a,b,c){
+//   console.log(this);
+//   console.log(this.callee.length)
+// }
+// function fn(d){
+//   arguments[0](10,20,30,40,50)
+// }
+// fn(yideng,10,20,30)
+// function test(){
+
+//   var a = "yideng";
+//   return function(){
+//     eval("");
+//   }
+// }
+// test()();
+// Object.prototype.a = 'a';
+// Function.prototype.a = "a1";
+// function Person(){}
+// 面向对象继承
+// function Car(color, price){
+//   this.color = color;
+//   this.price = price;
+// }
+// Car.prototype.sell = function(){
+//   console.log("Car sell");
+// }
+// function Cruze () {
+//   Car.apply(this,["red","140000"])
+// }
+
+// Cruze.prototype = Object.create(Car.prototype);
+// Cruze.prototype.constructor = Cruze;
+
+// Cruze.prototype.sell = function(){
+//   console.log("将"+this.color+"的Cruze卖给了小王的价格是"+this.price)
+// }
+// class Car{
+//   constructor(color,name){
+//     this.color = color;
+//     this.name = name;
+//   }
+//   sell(){}
+// }
+// class Cruze extends Car{
+//   constructor(){
+//     super("red","140000")
+//   }
+//   sell(){
+//     console.log("将"+this.color+"的Cruze卖给了小王的价格是"+this.price)
+//   }
+// }
+// let a = 0;
+// let yideng = async () =>{
+//   console.log(a)
+//   a= a+ await 10;
+// }
+// yideng();
+// console.log(++a);
+// $("#test").click(function(argument){
+//   console.log(1);
+// })
+// setTimeout(function(){
+//   console.log(2)
+// //   while(true){
+// //   console.log(Math.random())
+// // }
+// },0)
+var s = [];
+ var arr = s; 
+ for (var i = 0; i < 3; i++) {    
+   var pusher = {            
+     value: "item"+i        
+     },tmp;    
+     if (i !== 2) {      
+       tmp = []        
+       pusher.children = tmp    
+       }   
+      arr.push(pusher);  
+      console.log(s)
+      arr = tmp;
+  } 
+  console.log(arr,s[0]);
+</script>
+</html>
